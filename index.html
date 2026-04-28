@@ -12,7 +12,7 @@
             --nav-bg: #ffffff;
             --card-bg: #ffffff;
             --primary-color: #e74c3c;
-            --secondary-color: #3498db;
+            --secondary-color: #3498db; /* Blue color for hover */
             --sidebar-bg: #ffffff;
             --footer-bg: #2d3436;
             --footer-text: #dfe6e9;
@@ -54,18 +54,19 @@
         .search-bar button { padding: 10px 20px; background: var(--secondary-color); border: none; color: white; border-radius: 0 20px 20px 0; cursor: pointer; font-weight: bold; }
 
         nav ul { display: flex; gap: 20px; align-items: center; font-weight: 600; }
-        nav ul li a:hover { color: var(--primary-color); }
+        nav ul li a { transition: color 0.3s ease; }
+        nav ul li a:hover { color: var(--secondary-color); } /* Turns Blue on hover */
         .theme-toggle { background: var(--text-color); color: var(--bg-color); border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
 
         /* --- Main Layout (Sidebar + Content) --- */
         .layout-wrapper { display: flex; max-width: 1400px; margin: 30px auto; padding: 0 20px; gap: 30px; align-items: flex-start; }
 
         /* --- Left Sidebar (Categories) --- */
-        .sidebar { width: 260px; background: var(--sidebar-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); position: sticky; top: 90px; box-shadow: 0 4px 6px var(--hover-shadow); }
+        .sidebar { width: 260px; background: var(--sidebar-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); position: sticky; top: 90px; box-shadow: 0 4px 6px var(--hover-shadow); z-index: 100; }
         .sidebar h3 { font-size: 18px; margin-bottom: 20px; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; }
         .sidebar ul li { margin-bottom: 12px; }
         .sidebar ul li a { display: block; padding: 10px 15px; background: var(--bg-color); border-radius: 8px; transition: 0.2s; font-size: 15px; font-weight: 500; }
-        .sidebar ul li a:hover, .sidebar ul li a.active { background: var(--primary-color); color: white; transform: translateX(5px); }
+        .sidebar ul li a:hover, .sidebar ul li a.active { background: var(--secondary-color); color: white; transform: translateX(5px); }
         .sidebar .product-count { float: right; opacity: 0.7; font-size: 13px; }
 
         /* --- Main Content Area --- */
@@ -77,6 +78,11 @@
         .offers-banner p { font-size: 16px; font-weight: 500; }
         .offers-btn { background: #d35400; color: white; padding: 10px 20px; border-radius: 25px; font-weight: bold; transition: 0.3s; }
         .offers-btn:hover { background: #e67e22; transform: scale(1.05); }
+
+        /* --- Horizontal Scroll (For New Arrivals) --- */
+        .horizontal-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scrollbar-width: none; }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+        .scroll-item { min-width: 280px; flex: 0 0 auto; }
 
         /* --- Product Sections & Grid --- */
         .category-section { margin-bottom: 50px; padding-top: 20px; }
@@ -118,16 +124,24 @@
         .footer-col ul li a:hover { color: var(--primary-color); padding-left: 5px; transition: 0.2s; }
         .footer-bottom { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #444; font-size: 13px; opacity: 0.7; }
 
-        /* Responsive Design */
+        /* --- Mobile Optimization (Responsive Design) --- */
         @media(max-width: 992px) {
-            .layout-wrapper { flex-direction: column; }
-            .sidebar { width: 100%; position: static; margin-bottom: 20px; }
+            .layout-wrapper { flex-direction: column; margin-top: 10px; }
+            /* Changed Sidebar to Horizontal Scroll on Mobile */
+            .sidebar { width: 100%; position: static; margin-bottom: 10px; padding: 15px; }
+            .sidebar h3 { display: none; } /* Hide heading to save space */
+            .sidebar ul { display: flex; overflow-x: auto; flex-wrap: nowrap; gap: 10px; padding-bottom: 5px; scrollbar-width: none; }
+            .sidebar ul::-webkit-scrollbar { display: none; }
+            .sidebar ul li { margin-bottom: 0; white-space: nowrap; }
+            .sidebar ul li a { display: inline-block; padding: 8px 15px; border-radius: 20px; border: 1px solid var(--border-color); font-size: 14px; }
+            .sidebar .product-count { display: none; } /* Hide count on mobile */
             .main-content { width: 100%; }
         }
         @media(max-width: 768px) {
             header { flex-direction: column; gap: 15px; text-align: center; }
-            .search-bar { width: 100%; max-width: none; margin: 10px 0; }
+            .search-bar { width: 100%; max-width: none; margin: 5px 0; }
             nav ul { flex-wrap: wrap; justify-content: center; }
+            .scroll-item { min-width: 240px; }
         }
     </style>
 </head>
@@ -154,6 +168,8 @@
         <aside class="sidebar">
             <h3>Filter by Category</h3>
             <ul>
+                <li><a href="#new-arrivals">✨ New Arrivals</a></li>
+                <li><a href="#special-offers">🎁 Special Offers</a></li>
                 <li><a href="#smartphones">📱 Smartphones <span class="product-count">(3)</span></a></li>
                 <li><a href="#laptops">💻 Laptops <span class="product-count">(3)</span></a></li>
                 <li><a href="#audio">🎧 Audio & Headphones <span class="product-count">(3)</span></a></li>
@@ -170,6 +186,74 @@
                     <p>Up to 20% OFF on selected Laptops and Gaming Accessories. Limited time only!</p>
                 </div>
                 <a href="#laptops" class="offers-btn">Claim Offers</a>
+            </section>
+
+            <section class="category-section" id="new-arrivals">
+                <h2 class="category-title">✨ New Arrivals</h2>
+                <div class="horizontal-scroll">
+                    <div class="scroll-item">
+                        <div class="product-card">
+                            <span class="badge new">New Arrival</span>
+                            <div class="img-container"><img src="s24.jpg" alt="Galaxy S24" class="product-img"></div>
+                            <h3 class="product-title">Samsung Galaxy S24 Ultra</h3>
+                            <p class="product-desc">Galaxy AI is here. 200MP camera, built-in S Pen, Snapdragon 8 Gen 3.</p>
+                            <div class="price-row"><span class="product-price">LKR 399,000</span><span class="availability">In Stock</span></div>
+                            <div class="action-btns"><button class="add-to-cart">Add to Cart</button><button class="buy-now">Buy Now</button></div>
+                        </div>
+                    </div>
+                    <div class="scroll-item">
+                        <div class="product-card">
+                            <span class="badge new">New Arrival</span>
+                            <div class="img-container"><img src="Apple Watch Series 9.jpg" alt="Apple Watch" class="product-img"></div>
+                            <h3 class="product-title">Apple Watch Series 9</h3>
+                            <p class="product-desc">Smarter, brighter, and featuring the new Double Tap gesture.</p>
+                            <div class="price-row"><span class="product-price">LKR 79,990</span><span class="availability">In Stock</span></div>
+                            <div class="action-btns"><button class="add-to-cart">Add to Cart</button><button class="buy-now">Buy Now</button></div>
+                        </div>
+                    </div>
+                    <div class="scroll-item">
+                        <div class="product-card">
+                            <span class="badge offer">Save 10%</span>
+                            <div class="img-container"><img src="iphone15.jpg" alt="iPhone 15 Pro" class="product-img"></div>
+                            <h3 class="product-title">Apple iPhone 15 Pro</h3>
+                            <p class="product-desc">Titanium design, A17 Pro chip, 48MP main camera system.</p>
+                            <div class="price-row"><span class="product-price">LKR 328,500</span><span class="availability">In Stock</span></div>
+                            <div class="action-btns"><button class="add-to-cart">Add to Cart</button><button class="buy-now">Buy Now</button></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="category-section" id="special-offers">
+                <h2 class="category-title" style="color: var(--offer-text); background: var(--offer-bg); padding: 5px 15px; border-radius: 8px;">🎁 Special Offers</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <span class="badge offer">Mega Offer</span>
+                        <div class="img-container">
+                            <img src="ASUS.jpg" alt="ASUS ROG" class="product-img">
+                        </div>
+                        <h3 class="product-title">ASUS ROG Zephyrus G14</h3>
+                        <p class="product-desc">Ultimate gaming laptop with AMD Ryzen 9 and RTX 4060.</p>
+                        <div class="price-row">
+                            <div><span class="product-price">LKR 605,000</span><span class="old-price">LKR 632,000</span></div>
+                            <span class="availability">In Stock</span>
+                        </div>
+                        <div class="action-btns"><button class="add-to-cart">Add to Cart</button><button class="buy-now">Buy Now</button></div>
+                    </div>
+                    <div class="product-card">
+                        <span class="badge offer">Clearance</span>
+                        <div class="img-container">
+                            <img src="Logitech G915 TKL.jpg" alt="Logitech Keyboard" class="product-img">
+                        </div>
+                        <h3 class="product-title">Logitech G915 TKL</h3>
+                        <p class="product-desc">Tenkeyless LIGHTSPEED wireless RGB mechanical keyboard.</p>
+                        <div class="price-row">
+                            <div><span class="product-price">LKR 76,500</span><span class="old-price">LKR 85,000</span></div>
+                            <span class="availability">In Stock</span>
+                        </div>
+                        <div class="action-btns"><button class="add-to-cart">Add to Cart</button><button class="buy-now">Buy Now</button></div>
+                    </div>
+                </div>
             </section>
 
             <section class="category-section" id="smartphones">
